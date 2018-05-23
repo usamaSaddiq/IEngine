@@ -2,9 +2,6 @@ from Tokenizer import Tokenizer
 from Symbols import *
 
 class Analyzer(Tokenizer):
-    """
-    Analyser for propositional logic
-    """
     def __init__(self, input):
         super().__init__(input)
         self.data = {"~" : NSymbol, "&" : ASymbol, "\\/" : OSymbol, "TRUE" : TSymbol, "FALSE" : FSymbol}
@@ -17,7 +14,8 @@ class Analyzer(Tokenizer):
         if char == '~':
             return NSymbol()
         if char == '\\':
-            return self.or_char()
+            self.predict('/')
+            return OSymbol()
         # check for and operator            
         if char == '&':
             return ASymbol()
@@ -29,10 +27,13 @@ class Analyzer(Tokenizer):
             return RSymbol()
         # check for bicondition
         if char == '<':
-            return self.bicond_char()
+            self.predict('=')
+            self.predict('>')
+            return BSymbol()
         # check for implication
         if char == '=':
-            return self.impl_char()
+            self.predict('>')
+            return ImSymbol()
         # check for end of line
         if char == None:
             return ESymbol()
@@ -43,22 +44,9 @@ class Analyzer(Tokenizer):
         
         raise Exception("Unexpected symbol " + char)
 
-    def or_char(self):
-        self.predict('/')
-        return OSymbol()
-
-    def bicond_char(self):
-        self.predict('=')
-        self.predict('>')
-        return BSymbol()
-
-    def impl_char(self):
-        self.predict('>')
-        return ImSymbol()
-
     def get_identifier(self):
         content = self.next_char()
-        while True:
+        for iterator in range(100):
             char = self.next_char()
             if char != None and char.isalnum():
                 content += char
@@ -66,9 +54,7 @@ class Analyzer(Tokenizer):
                 if char != None:
                     self.decrement_position()
                 break
-        return self.create_identifier(content)
-
-    def create_identifier(self, content):
+        
         unknown_identifier = self.data.get(content)
         if not unknown_identifier:
             return IDSymbol(content)  

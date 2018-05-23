@@ -7,10 +7,7 @@ class Symbol:
         if not isinstance(other, Symbol):
             return False
 
-        return self.content == other.content and self.type == other.type
-
-    def __str__(self):
-        return "Symbol(" + str(self.type) + ", '" + self.content + "')"
+        return self.content == other.content and self.symbol_type == other.symbol_type
 
 def get_symbol_type_name(type):
     if type == 0:

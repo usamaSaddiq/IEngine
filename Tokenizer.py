@@ -1,9 +1,8 @@
 class Tokenizer:
-    NIL = -1
     def __init__(self, input):
         self.input = input
         self.current_position = 0
-        self.marked_index = self.NIL
+        self.marked_index = -1
 
     def decrement_position(self):
         if self.current_position != 0:
@@ -13,7 +12,7 @@ class Tokenizer:
         self.marked_index = self.current_position
 
     def jump_spaces(self):
-        while True:
+        for x in range(100):
             symbol = self.next_char()
             if symbol == None:
                 break
@@ -22,7 +21,7 @@ class Tokenizer:
                 break
     
     def change_to_mark(self):
-        if self.marked_index == self.NIL:
+        if self.marked_index == -1:
             raise Exception("Attempt to rollback with no mark")
         else:
             self.current_position = self.marked_index
@@ -32,7 +31,7 @@ class Tokenizer:
             symbol = self.input[self.current_position]
             self.current_position += 1
             return symbol
-        except IndexError as ie:
+        except Exception as ie:
             return None
 
     def predict(self, expected):

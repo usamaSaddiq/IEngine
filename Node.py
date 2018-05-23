@@ -14,18 +14,16 @@ class Node:
         elif len(self.child_nodes) != len(rhs.child_nodes):
             return False
         else:
-            length_of_children = copy.deepcopy(self.child_nodes)
-            while length_of_children > 0:
-                length_of_children -= 1
+            for x in range(1000):
                 if self.child_nodes != rhs.child_nodes:
                     return False
             return True
 
     def __hash__(self):
-        # need to return a unique prime to compare two models
+        # need to return a unique prime to locate two models uniquely models
         prime = 1913
         for child in self.child_nodes:
-            prime ^= hash(child)
+            prime += hash(child)
         return prime
 
 class IdNode(Node):
