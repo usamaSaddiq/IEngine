@@ -5,10 +5,11 @@ from util import *
 
 default = None
 trail = []
-class FC:
+class Chaining:
     def __init__(self):
         self.sum = {}
         self.infered = {}
+        self.agenda = []
         self.facts = []
     class HC:
         def __init__(self, knowledge_base):
@@ -32,20 +33,46 @@ class FC:
 
         def __eq__(self, other):
             return isinstance(other, HC)
-
             if self.head != other.head:
                 return False
-
             if len(self.lhs) != len(other.lhs):
                 return False
-
             for i in range(len(self.lhs)):
                 if self.lhs[i] != other.lhs[i]:
                     return False
-
             return True
 
-    def get_chain(self, kb, question):
+    def get_bchain(self,kb,question):
+        terms = []
+        for clause in kb.clauses:
+            terms.append(self.HC(clause))
+
+        for term in terms:
+            if len(term.lhs) == 0:
+                self.facts.append(term.rhs)
+
+        self.agenda.append(question)
+        to_process = []
+        while(len(self.agenda) > 0):
+            p = self.agenda.pop()
+            trail.insert(0,p)            
+            if not p in self.facts:
+                for term in terms:
+                    if p == term.rhs:
+                        for t in term.lhs:
+                            to_process.append(t)
+                if len(to_process) == 0:
+                    return False,trail
+                else:
+                    for node in to_process:
+                        if not node in trail:
+                            self.agenda.append(node)
+
+        return True,trail
+            
+        
+
+    def get_fchain(self, kb, question):
         terms = []
         for clause in kb.clauses:
             terms.append(self.HC(clause))
@@ -99,9 +126,17 @@ kb.feed_sentence("a")
 # kb.feed_sentence("p4")
 question_sentence = Parser().process("d")
 
-fc = FC()
-result,trace = fc.get_chain(kb, question_sentence)
+# tool = Chaining()
+# result,trace = tool.get_fchain(kb, question_sentence)
+# if result == True:
+#     print("Yes: ", end="")    
+#     for t in trace:
+#         print(t.name + " ", end="")
+# else:
+#     print("No")
 
+tool = Chaining()
+result,trace = tool.get_bchain(kb, question_sentence)
 if result == True:
     print("Yes: ", end="")    
     for t in trace:
