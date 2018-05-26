@@ -5,6 +5,7 @@ from util import *
 
 default = None
 trail = []
+
 class Chaining:
     def __init__(self):
         self.sum = {}
@@ -43,6 +44,7 @@ class Chaining:
             return True
 
     def get_bchain(self,kb,question):
+        question = Parser().process(question)        
         terms = []
         for clause in kb.clauses:
             terms.append(self.HC(clause))
@@ -70,9 +72,8 @@ class Chaining:
 
         return True,trail
             
-        
-
     def get_fchain(self, kb, question):
+        question = Parser().process(question)
         terms = []
         for clause in kb.clauses:
             terms.append(self.HC(clause))
@@ -100,46 +101,3 @@ class Chaining:
                                 return True,trail
                             self.facts.append(term.rhs)
         return False,trail
-
-kb = KnowledgeBase()
-kb.feed_sentence("p2=> p3")
-kb.feed_sentence("p3=> p1")
-kb.feed_sentence("c => e")
-kb.feed_sentence("p1=>d")
-kb.feed_sentence("(b&e) => f")
-kb.feed_sentence("(f&g) => h")
-kb.feed_sentence("(p1&p3) => c")
-kb.feed_sentence("p2")
-kb.feed_sentence("b")
-kb.feed_sentence("a")
-
-# kb.feed_sentence("(a <=> (c => ~d)) & b & (b => a)")
-# kb.feed_sentence("f & g")
-# kb.feed_sentence("c")
-
-# kb.feed_sentence("p1&p2&p3 => p4")
-# kb.feed_sentence("p5&p6 => p4")
-# kb.feed_sentence("p1 => p2")
-# kb.feed_sentence("p1&p2 => p3")
-# kb.feed_sentence("p5&p7 => p6")
-# kb.feed_sentence("p1")
-# kb.feed_sentence("p4")
-question_sentence = Parser().process("d")
-
-# tool = Chaining()
-# result,trace = tool.get_fchain(kb, question_sentence)
-# if result == True:
-#     print("Yes: ", end="")    
-#     for t in trace:
-#         print(t.name + " ", end="")
-# else:
-#     print("No")
-
-tool = Chaining()
-result,trace = tool.get_bchain(kb, question_sentence)
-if result == True:
-    print("Yes: ", end="")    
-    for t in trace:
-        print(t.name + " ", end="")
-else:
-    print("No")
