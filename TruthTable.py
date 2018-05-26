@@ -72,7 +72,6 @@ kb.feed_sentence("c")
 # kb.feed_sentence("p4")
 
 flag = entails(kb,"f")
-# result = plfc_entails(kb, PLParser().parse("d"))
 
 
 if flag:
