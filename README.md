@@ -13,7 +13,7 @@ We want to able to tell if the given knwoledge base i,e KB entails a variable. T
 kb entails d
 ```
 
-###Other data samples
+### Other data samples
 
 ```
 TELL
@@ -34,7 +34,7 @@ e & f
 
 ```
 
-###Output
+### Output
 For clause 1 the output should be true because the given knowledge base entails d.
 
 More information https://en.wikipedia.org/wiki/Logical_consequence
