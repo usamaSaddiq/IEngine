@@ -31,9 +31,11 @@ ASK
 d
 
 TELL
-p2=> p3; p3 => p1; c => e; (b&e) => f; (f&g) => h; p1=>d; p1&p3 => c; p2; b; a; 
+a <=> c => ~d & b & b => a
+f & g
+c
 ASK
-a => b
+a
 
 
 TELL
