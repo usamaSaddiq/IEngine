@@ -10,8 +10,17 @@ p2=> p3; p3 => p1; c => e; (b&e) => f; (f&g) => h; p1=>d; p1&p3 => c; p2; b; a;
 We want to able to tell if the given knwoledge base i,e KB entails a variable. This can be expressed in the form 
 
 ```
-kb entails d
+kb |= d
 ```
+
+This project uses three methods:
+
+[Inference](https://en.wikipedia.org/wiki/Inference)
+
+[Forward Chaining](https://en.wikipedia.org/wiki/Forward_chaining)
+
+[Backward Chaining](https://en.wikipedia.org/wiki/Backward_chaining)
+
 
 ### Other data samples
 
